@@ -4,6 +4,20 @@ import pool from "../db.js"
 
 const onboarding_router = express.Router()
 
+const id_variable = []
+
+const name = "sfs"
+function getuserid () {
+    const getid = 'SELECT id FROM users WHERE name=$1'
+    pool.query(getid, [name], async (err, result) => {
+        console.log(result.rows)
+        id_variable.push(result.rows)
+        console.log(id_variable)
+        
+    })
+}
+
+getuserid()
 
 onboarding_router.post("/postData", async (req, res) => {
     const name = req.body.name
@@ -15,7 +29,8 @@ onboarding_router.post("/postData", async (req, res) => {
     // 'WITH getval(id) as (INSERT INTO users (name) VALUES ($1) RETURNING id) INSERT INTO employee_forms (user_id, form_type) VALUES((SELECT id from getval), $2);
 
     // const creating_user = "WITH ins1 AS (INSERT INTO users(name) VALUES ($1) RETURNING id as user_id), ins2 AS (INSERT INTO employee_forms(user_id, form_type) VALUES ((SELECT user_id FROM ins1 RETURNING user_id), $1) INSERT INTO form_inputs(employee_form_id, form_field_id) VALUES((SELECT user_id FROM ins2),(SELECT id FROM form_fields ORDER BY id LIMIT 17))"
-    const creating_user = 'WITH ins1 AS (INSERT INTO users(name)VALUES ($1)RETURNING id ), ins2 AS (INSERT INTO employee_forms(user_id, form_type)VALUES((SELECT id FROM ins1), $2)RETURNING id)INSERT INTO form_inputs(employee_form_id, form_field_id)VALUES ((SELECT id from ins2), (1)),((SELECT id from ins2), (2)),((SELECT id from ins2), (3)),((SELECT id from ins2), (4)),((SELECT id from ins2), (5)),((SELECT id from ins2), (6)),((SELECT id from ins2), (7)),((SELECT id from ins2), (8)),((SELECT id from ins2), (9)),((SELECT id from ins2), (10)),((SELECT id from ins2), (11)),((SELECT id from ins2), (12)),((SELECT id from ins2), (13)),((SELECT id from ins2), (14)),((SELECT id from ins2), (15)),((SELECT id from ins2), (16)),((SELECT id from ins2), (17));'
+    const creating_user = `WITH ins1 AS (INSERT INTO users(name)VALUES ($1)RETURNING id), ins2 AS (INSERT INTO employee_forms(user_id, form_type)VALUES((SELECT id FROM ins1), $2)RETURNING id)INSERT INTO form_inputs(employee_form_id, form_field_id)VALUES ((SELECT id from ins2), (1)),((SELECT id from ins2), (2)),((SELECT id from ins2), (3)),((SELECT id from ins2), (4)),((SELECT id from ins2), (5)),((SELECT id from ins2), (6)),((SELECT id from ins2), (7)),((SELECT id from ins2), (8)),((SELECT id from ins2), (9)),((SELECT id from ins2), (10)),((SELECT id from ins2), (11)),((SELECT id from ins2), (12)),((SELECT id from ins2), (13)),((SELECT id from ins2), (14)),((SELECT id from ins2), (15)),((SELECT id from ins2), (16)),((SELECT id from ins2), (17));`
+
     pool.query(creating_user, [name, onboarding], async (err, result) => {
         if(err) {
             res.send(err)
@@ -50,13 +65,13 @@ onboarding_router.get("/user/:id", (req, res) => {
     console.log(id)
 
 
-    const get_form = 'SELECT form_inputs.form_field_id, form_inputs.employee_form_id, form_inputs.status, form_inputs.edit, form_fields.description FROM form_inputs INNER JOIN form_fields ON form_inputs.form_field_id = form_fields.form_field_id ORDER BY id'
+    const get_form = 'SELECT form_inputs.form_field_id, form_inputs.employee_form_id, form_inputs.status, form_inputs.edit, form_fields.description FROM form_inputs INNER JOIN form_fields ON form_inputs.form_field_id = form_fields.form_field_id WHERE employee_form_id = ($1) ORDER By id'
     try{
-        pool.query(get_form, (err, result) => {
+        pool.query(get_form, [id], (err, result) => {
             if(err){
                 res.send(err)
             } else{
-                res.send(result.rows)
+                res.send(result)
             }
         })
     }catch(error){
@@ -67,13 +82,31 @@ onboarding_router.get("/user/:id", (req, res) => {
 
 
 onboarding_router.put("/editdata", (req, res) => {
+    console.log(req.body["select-option"])
 
-    
+    const id = req.body.id
+    const edit = req.body.editcomment
+    const status = req.body["select-option"]
 
+    const insert_query = 'UPDATE form_inputs SET edit= , status =  WHERE  form_field_id = 1 AND employee_form_id = 62'
+    try {
+        pool.query(insert_query, (req, res) => {
+            if(err) {
+                res.send(err)
+            }else{
+                res.send(result.rows)
+            }
 
+        })
+    }catch(error){
+        console.log(error)
+        res.send('there is currently no data')
+    }
 })
 
+
 onboarding_router.delete("/delete/:name", (req, res) => {
+
 
 
 

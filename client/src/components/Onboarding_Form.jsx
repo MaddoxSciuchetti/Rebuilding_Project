@@ -1,14 +1,18 @@
 import "./on_form.css"
 import "react";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Form from "./form";
-import {useParams } from "react-router-dom";
-import {API_URL} from "../api.js";
+import { useParams } from "react-router-dom";
+import { API_URL } from "../api.js";
+
 
 function Onboarding_form() {
-    async function sendFormData(formData) {
+
+    
+    async function sendFormData (formData) {
+
         await fetch(`${API_URL}/onboarding/editdata`, {
-            method:"PUT",
+            method: "PUT",
             headers: {
                 "Content-Type":"application/json"
             },
@@ -19,6 +23,16 @@ function Onboarding_form() {
     }
 
     async function handleSubmit(event) {
+        // Erster Versuch der nicht geklappt hat bei vanilla js klappt der
+        // event.preventDefault();
+
+        // const form = event.target
+        // const name = form.name.target;
+        // let formData = new FormData()
+        // formData.append("name", name)
+        // document.getElementById("id").value=""
+        // await sendFormData(formData)
+
         event.preventDefault();
         const form = event.target;
         let formData = new FormData(form)
@@ -26,22 +40,24 @@ function Onboarding_form() {
         for (let keyValue of formData.entries()) {
             data[keyValue[0]] = keyValue[1];
         }
-
         const url = window.location.href
-
+       
         const str = url.split("/");
         const new_str = str[str.length -1];
         data.username = new_str
 
+
         console.log("formdata incoming", data);
 
         await sendFormData(data)
+
     }
-
-    const [formattedData, setFormDattedData] = useState([])
-
+    const [data, setData] = useState([])
+    const [formattedData, setFormattedData] = useState([])
+    
     const url = window.location.pathname.split("/").pop()
     console.log(url)
+
 
     const descriptions = [
         "Arbeitsvertrag unterschrieben zurück + Dokumente BSB", 
@@ -64,12 +80,14 @@ function Onboarding_form() {
     ]
 
     useEffect(() => {
-        const dataFetch = async () => {
+        const dataFetch = async() => {
             const data = await (
-                await fetch(`${API_URL}/onboarding/user${url}`)
+                await fetch(`${API_URL}/onboarding/user/`+url)
             ).json()
 
 
+            // 17 values wurde von Glenn erstellt
+            // Sehr wichtig Daten Formatt/Formattierung zwischen frontend und backend
             const schema = [{
                 description: "",
                 input: {
@@ -77,45 +95,76 @@ function Onboarding_form() {
                     edit: ""
                 }
             }]
-
+            
             const formattedData = data.map((input, i) => {
                 return {
                     description: descriptions[i],
                     input: {
-                        id: input.id,
+                        id: input.id, 
                         status: input["status"],
                         edit: input["edit"]
                     }
                 }
             })
 
-            console.log("unformatte", data)
-            console.log("formatted data" , formattedData)
+            console.log("unformatted data", data)
+            console.log("formattedData:", formattedData)
 
-            setFormDattedData(formattedData)
+
+            // const schema = [{
+            //     description: "",
+            //     input: {
+            //         status: "",
+            //         note: ""
+            //     }
+            // }]
+            
+            // const formattedData = data.map((input, i) => {
+            //     return {
+            //         description: i <= 2 ? descriptions[i] : "placeholder",
+            //         input: {
+            //             status: input.status,
+            //             note: input.edit
+            //         }
+            //     }
+            // })
+
+
+            // console.log("formattedData:", formattedData)
+
+
+            // setData(data)
+
+
+            setFormattedData(formattedData)
+            
+            
         };
+        dataFetch()
     }, [])
 
+    return( 
 
-    return (
         <>
-          <div className="modal-container">
-            <div className="main-form">
-                <div className="form-group">
-                    {formattedData && formattedData.map(( values, index) => (
-                        <Form 
-                          key={index}
-                          id_original={values.input.id}
-                          editcomment={values.input["edit"]}
-                          select_option = {values.input["status"]}
-                          description = {values["desription"]}
-                          handleSubmit={handleSubmit}
-                        />
-                    ))}
+            <div className="modal-container">
+                <div className="main-form">
+                    <div className="form-group">
+                        {formattedData && formattedData.map((values, index) => (
+                            <Form
+                            key={index}
+                            id_original={values.input.id}
+                            editcomment={values.input["edit"]}
+                            select_option = {values.input["status"]}
+                            description = {values["description"]}
+                            handleSubmit={handleSubmit}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
-          </div>
         </>
+
+
     )
 }
 

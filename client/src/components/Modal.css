@@ -13,14 +13,14 @@ body.active-modal {
     width: 100vw;
     height: 100vh;
     top: 0;
-    left: 0;
+    left: 0; 
     right: 0;
     bottom: 0;
     position: fixed;
 }
 
 .overlay {
-    background: rgba(49,49,49, 0.8)
+    background: rgba(49,49,49, 0.8);
 }
 
 .modal-content {
@@ -31,16 +31,22 @@ body.active-modal {
     left: 50%;
     transform: translate(-50%, -50%);
     background: #f1f1f1;
-    padding: 4px; 
+    padding: 14px 28px;
+}
+
+.modal-content button {
+    margin-top: 1em;
+    border: solid;
+    padding: 4px;
     border-radius: 10px;
 }
 
-.moda-content button:hover{
+.modal-content button:hover {
     background-color: darkred;
     color: white;
     cursor: pointer;
 }
 
-.x-item {
+.x-item{
     font-size: 20px;
 }

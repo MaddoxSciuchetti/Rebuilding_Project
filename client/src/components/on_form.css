@@ -1,4 +1,6 @@
+
 .modal-container {
+
     z-index: 1;
     left: 0;
     top: 0;
@@ -7,33 +9,37 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0,0,0,0,4);
-    overflow-y: scroll;
+    background-color: rgba(47, 138, 230, 0.1);
+    overflow-y: scroll; 
     width: 70%;
-    border-radius: 20px;
+    border-radius: 20px; 
     margin: auto;
     margin-top: 20px;
 }
 
 .main-form {
-    margin-top: 5px;
+    margin-top: 5px; 
 }
 
-.form_group {
+.form-group {
+
     border-radius: 10px;
     margin-bottom: 1rem;
     text-align: right;
-    padding: 1rem 1rem;
-    margin: auto;
+    padding: 1rem 1rem; 
+    margin: auto; 
     width: 100%;
 }
 
-.field {
+.field{
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
-    margin-top: 5em;
+    margin-top: 5em; 
+    
 
     vertical-align: middle;
     text-align: center;
+ 
 }
 
 .field p {
@@ -44,31 +50,40 @@
     display: grid;
     grid-template-columns: 1fr;
     cursor: pointer;
-    color: white;
+    color: white; 
     border-radius: 10px;
+
+
 }
 
-.field-text text {
-    text-align: center;
+.field-text text{
+    text-align: center; 
+;
 }
+
+
 
 .field-text select {
-    cursor: pointer;
+    cursor:pointer; 
     border-radius: 10px;
+
 }
 
 .field-text textarea {
     margin-top: 2em;
     font-size: 15px;
-    resize: none;
+    resize: none; 
     width: 100%;
     outline: none;
-
+   
     z-index: 3;
     overflow: visible;
+
 }
+
 .entire_form {
     border-bottom: .5px solid #777;
+
 }
 
 .submit-form {
@@ -81,3 +96,8 @@
     color: white;
     border-radius: 10px;
 }
+
+
+
+
+

@@ -5,12 +5,14 @@ import Form from "./form";
 import { API_URL } from "../api.js";
 
 
+
 function Offboarding_form () {
+
     async function sendFormData(formData) {
         await fetch(`${API_URL}/offboarding/offboarding/editoffboarding`, {
-            method: "PUT",
+            method:"PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type":"application/json"
             },
             body: JSON.stringify(formData)
         })
@@ -24,7 +26,7 @@ function Offboarding_form () {
         let formData = new FormData(form)
         const data = {};
         for(let keyValue of formData.entries()) {
-            data[keyValue[0]] = keyValue(1);
+            data[keyValue[0]] = keyValue[1];
         }
         const url = window.location.href
 
@@ -33,10 +35,30 @@ function Offboarding_form () {
         data.username = new_str
 
         console.log(data);
+
         await sendFormData(data)
     }
 
-    const [formattedData, setFormDattedData] = useState([])
+    const [data, setData] = useState([])
+    const [formattedData, setFormattedData] = useState([])
+
+    const descriptions = [
+        "Rückgabe Computer",
+        "Rückgabe PKW",
+        "Rückgabe Handy",
+        "Rückgabe Schlüssel",
+        "Rückgabe Werkzeug (wenn unvollständig, was fehlt?)",
+        "Rückgabe Arbeitskleidung", 
+        "Abwesenheitsassistent Mail eingerichtet",
+        "Weiterleitung Mail eingerichtet",
+        "Löschung privater Mails durch Mitarbeiter",
+        "Zugänge gesperrt",
+        "Offboarding-Gespräch terminiert",
+        "Offboarding-Gespräch durchgeführt", 
+        "Infomail ans Team versendet", 
+        "Arbeitszeugnis erstellt & verschickt",
+    ]
+
 
     const url = window.location.pathname.split("/").pop()
     console.log(url)
@@ -44,32 +66,35 @@ function Offboarding_form () {
     useEffect(() => {
         const dataFetch = async () => {
             const data = await (
-                await fetch(`${API_URL}/offboarding/offboarding/user/${url}`)).json()
-                console.log(data)
+                await fetch(`${API_URL}/offboarding/offboarding/user/`+ url)
+            ).json()
+            console.log(data)
 
-                const schema = [{
-                    description: "",
+
+            const schema = [{
+                description: "",
+                input: {
+                    status: "",
+                    edit: ""
+                }
+            }]
+
+            const formattedData = data.map((input, i) => {
+                return {
+                    description: descriptions[i],
                     input: {
-                        status: "", 
-                        edit: ""
+                        id: input.id,
+                        status: input["status"],
+                        edit: input["edit"]
                     }
-                }]
+                }
+            })
 
-                const formattedData = data.map((input, i ) => {
-                    return {
-                        description: descriptions [i],
-                        input: {
-                            id: input.id,
-                            status: input["status"],
-                            edit: input["edit"]
-                        }
-                    }
-                })
+            console.log("unformatted data", data)
+            console.log("formatted data", formattedData)
 
-                console.log("unformatted data", data)
-                console.log("formatted data", formattedData)
+            setFormattedData(formattedData)
 
-                setFormDattedData(formattedData)
         };
         dataFetch()
     }, [])
@@ -77,24 +102,27 @@ function Offboarding_form () {
     return (
         <>
 
-          <div className="modal-container">
-            <div className="main-form">
-                <div className="form-group">
-                    {formattedData && formattedData.map((values, index) => (
-                        <Form
-                          key={index}
-                          id_original={values.input.id}
-                          editcomment={values.input["edit"]}
-                          select_option={values.input["status"]}
-                          description={values["description"]}
-                          handleSubmit={handleSubmit}
-                        />
-                    ))}
+        {/* improve the styling */}
+            <div className="modal-container">
+                <div className="main-form">
+                    <div className="form-group">
+                        {formattedData && formattedData.map((values, index) => (
+                            <Form 
+                            key={index}
+                            id_original={values.input.id}
+                            editcomment={values.input["edit"]}
+                            select_option={values.input["status"]}
+                            description = {values["description"]}
+                            handleSubmit={handleSubmit}
+                            />
+
+                        ))}
+                    </div>
                 </div>
             </div>
-          </div>
         </>
     )
+
 }
 
-export default Offboarding_form;
+export default Offboarding_form; 

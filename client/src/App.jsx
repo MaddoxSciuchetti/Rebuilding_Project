@@ -1,33 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css"
+import Onboarding_Form_Main from "./components/Onboarding_Main"
+import {Routes, Route} from 'react-router-dom';
+import Offboarding_main from "./components/Offboarding_main"
+import Offboarding_form from "./components/Offboarding_form"
+import Onboarding_form from './components/Onboarding_Form';
+import { Navbar } from './components/Navbar';
+import { Home } from './components/Home';
+import Modal from './components/Modal';
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="main-header">
+        <Navbar/>
+          <Routes>
+            <Route path="/webdev" element={<Modal/>} />
+            <Route path="/" element={<Home/>} />
+            <Route path="/onboarding" element={<Onboarding_Form_Main/>}/>
+            <Route path="/offboarding" element={<Offboarding_main/>}/>
+            <Route path="/onboarding/user/:userId" element={<Onboarding_form/>}/>
+            <Route path="/offboarding/user/:userId" element={<Offboarding_form/>}/>
+            <Route path="/component" element={<Onboarding_form/>}/>
+          </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    
     </>
   )
 }

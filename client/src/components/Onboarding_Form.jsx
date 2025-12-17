@@ -85,7 +85,7 @@ function Onboarding_form() {
                 await fetch(`${API_URL}/onboarding/user/`+url)
             ).json()
 
-            console.log(data)
+
 
 
             // 17 values wurde von Glenn erstellt
@@ -103,7 +103,8 @@ function Onboarding_form() {
                     index: i, 
                     description: input.description,
                     input: {
-                        id: input.id, 
+                        id: input.employee_form_id, 
+                        form_field_id: input.form_field_id,
                         status: input.status,
                         edit: input.edit
                     }
@@ -159,6 +160,7 @@ function Onboarding_form() {
                             editcomment={values.input["edit"]}
                             select_option = {values.input["status"]}
                             description = {values["description"]}
+                            form_field_id = {values.input.form_field_id}
                             handleSubmit={handleSubmit}
                             />
                         ))}

@@ -77,10 +77,10 @@ onboarding_router.get("/user/:id", (req, res) => {
 onboarding_router.put("/editdata", (req, res) => {
 
     const id = req.body["user_id"]
-    const edit = req.body["edit"]
-    const status = req.body["status"]
+    const edit = req.body["editcomment"]
+    const status = req.body["select-option"]
     const form_field_id = req.body["form_field_id"]
-    const employee_form_id = req.body["employee_form_id"]
+    const employee_form_id = req.body["username"]
     console.log(id)
     console.log(edit)
     console.log(status)
@@ -94,7 +94,7 @@ onboarding_router.put("/editdata", (req, res) => {
                 res.send(err)
             }else{
                 res.send(result.rows)
-                res.sendStatus(204)
+
             }
 
         })

@@ -1,13 +1,14 @@
 import "./on_form.css"
 import "react";
 
-function Form ({editcomment , select_option , id_original , description,  handleSubmit }) {
+function Form ({form_field_id, editcomment , select_option , id_original , description,  handleSubmit }) {
 
     return (
         <>
             <form className="entire_form" onSubmit={handleSubmit} name="valuesform">
 
                 <input type="hidden"  id="id" name="id" value={id_original}/>
+                <input type="hidden" id="form_field_id" name="form_field_id" value={form_field_id} />
              
 
                 <div className="field">

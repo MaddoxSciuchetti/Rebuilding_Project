@@ -9,7 +9,7 @@ import { API_URL } from "../api.js";
 function Offboarding_form () {
 
     async function sendFormData(formData) {
-        await fetch(`${API_URL}/offboarding/offboarding/editoffboarding`, {
+        await fetch(`${API_URL}/offboarding/editdata`, {
             method:"PUT",
             headers: {
                 "Content-Type":"application/json"
@@ -34,7 +34,7 @@ function Offboarding_form () {
         const new_str = str[str.length -1];
         data.username = new_str
 
-        console.log(data);
+        console.log("formdata incoming", data);
 
         await sendFormData(data)
     }
@@ -61,14 +61,14 @@ function Offboarding_form () {
 
 
     const url = window.location.pathname.split("/").pop()
-    console.log(url)
+    // console.log(url)
 
     useEffect(() => {
         const dataFetch = async () => {
             const data = await (
-                await fetch(`${API_URL}/offboarding/offboarding/user/`+ url)
+                await fetch(`${API_URL}/offboarding/user/`+ url)
             ).json()
-            console.log(data)
+
 
 
             const schema = [{
@@ -81,11 +81,13 @@ function Offboarding_form () {
 
             const formattedData = data.map((input, i) => {
                 return {
-                    description: descriptions[i],
+                    index: i,
+                    description: input.description,
                     input: {
-                        id: input.id,
-                        status: input["status"],
-                        edit: input["edit"]
+                        id: input.employee_form_id,
+                        form_field_id: input.form_field_id,
+                        status: input.status,
+                        edit: input.edit
                     }
                 }
             })
@@ -113,6 +115,7 @@ function Offboarding_form () {
                             editcomment={values.input["edit"]}
                             select_option={values.input["status"]}
                             description = {values["description"]}
+                            form_field_id = {values.input.form_field_id}
                             handleSubmit={handleSubmit}
                             />
 

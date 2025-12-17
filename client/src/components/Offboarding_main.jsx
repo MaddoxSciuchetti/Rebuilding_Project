@@ -23,13 +23,13 @@ function Offboarding_main() {
             console.log("test", data)
             const formattedData = data.map((input , i ) => {
                 return {
-                    description: i, 
                     input: {
                         id: input.id,
                         name: input["name"]
                     }
                 }
             })
+            console.log("formatteddata", formattedData)
             setTasks(formattedData)
             setIsLoading(false);
             
@@ -40,6 +40,7 @@ function Offboarding_main() {
     function handleSubmit() {
         if(newTask) {
             function information() {
+                
                 return fetch(`${API_URL}/offboarding/postoffboardingdata`, {
                     method: "POST",
                     headers: {

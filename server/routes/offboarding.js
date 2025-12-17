@@ -71,14 +71,13 @@ offboarding_router.put("/editdata", (req, res) => {
     console.log(form_field_id)
     console.log(employee_form_id)
 
-    const insert_query = 'UPDATE form_inputs SET edit = $1, status=$2, WHERE form_field_id = $3 AND employee_form_id = $4'
+    const insert_query = 'UPDATE form_inputs SET edit=$1, status=$2 WHERE form_field_id= $3 AND employee_form_id = $4'
     try {
         pool.query(insert_query, [edit, status, form_field_id, employee_form_id], (err, result) => {
             if(err){
                 res.send(err)
             }else {
                 res.send(result.rows)
-                res.sendStatus(204)
             }
         })
     }catch(error) {
@@ -101,7 +100,9 @@ offboarding_router.delete("/delete/:id", (req, res) => {
         })
     }catch(error) {
         console.log(err)
+        res.send("there is currently no data")
     }
+
 })
 
 export default offboarding_router;

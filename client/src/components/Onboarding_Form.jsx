@@ -56,7 +56,7 @@ function Onboarding_form() {
     const [formattedData, setFormattedData] = useState([])
     
     const url = window.location.pathname.split("/").pop()
-    console.log(url)
+    // console.log(url)
 
 
     // const descriptions = [

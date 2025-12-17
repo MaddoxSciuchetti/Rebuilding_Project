@@ -22,11 +22,10 @@ function Onboarding_Form_Main() {
             const data = await (
                 await fetch(`${API_URL}/onboarding/fetchData`)
             ).json()
-            console.log(data)
+
             // formatting data is important
             const formattedData = data.map((input, i) => {
-                return {
-                    description: i,
+                return {        
                     input: {
                         id: input.id, 
                         name: input["name"]
@@ -45,26 +44,28 @@ function Onboarding_Form_Main() {
 
         if(newTask){
 
+            
             setTasks([...tasks, {
                 input: {
-                    "name": newTask 
+                    "name": newTask
                 }
             }])
-            setNewTask("")
             
-            await fetch(`${API_URL}/onboarding/postData` , {
+            
+            fetch(`${API_URL}/onboarding/postData` , {
                 method: "POST",
                 headers: {
                     "Content-Type":"application/json"
                 },
                 body: JSON.stringify({"name": newTask})
-            })
-            .then((response) => console.log(response)) 
+            }).then((response) => response.json())
+              .then((rows) => console.log(rows.result.employee_form_id))
         }
     }
     
-     function remove_task_1(taskToRemove) {
-        return fetch(`${API_URL}/onboarding/delete/${taskToRemove}`, {
+     function remove_task_1(taskId) {
+        
+        return fetch(`${API_URL}/onboarding/delete/${taskId}`, {
         method:"DELETE",
         headers: {
             "Content-Type":"application/json"
@@ -73,13 +74,11 @@ function Onboarding_Form_Main() {
     })
     }
 
-    async function removeTask(taskToRemove) {
+    async function removeTask(taskId) {
         // setError("Something went wrong")
-
-
         try {
-            await remove_task_1(taskToRemove)
-            const filteredTasks = tasks.filter((task) => task.input["name"] !== taskToRemove)
+            await remove_task_1(taskId)
+            const filteredTasks = tasks.filter((task) => task.input.name !== taskId)
             setTasks(filteredTasks);
         } catch (e) {
             console.error(e)
@@ -87,8 +86,8 @@ function Onboarding_Form_Main() {
         }
     }
 
-    function handlepage(task){
-        window.location.href = `/onboarding/user/${task}`  
+    function handlepage(taskId){
+        window.location.href = `/onboarding/user/${taskId}`  
     }
 
     const [isLoading, setIsLoading] = useState(false);

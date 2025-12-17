@@ -4,7 +4,6 @@ import pool from "../db.js"
 
 const onboarding_router = express.Router()
 
-
 onboarding_router.post("/postData", async (req, res) => {
     const name = req.body.name
     const onboarding = 'onboarding'
@@ -21,9 +20,11 @@ onboarding_router.post("/postData", async (req, res) => {
             res.send(err)
             console.log(err)
         } else{
-            console.log(result.rows[0])
-            res.send(result.rows[0])
-            
+            console.log(result)
+            res.json({
+                "name": name,
+                "result": result.rows[0]
+            })
         }
     })
 })
@@ -37,7 +38,7 @@ onboarding_router.get("/fetchData", (req, res) => {
                 res.send(err)
             } else{
                 res.send(result.rows)
-                
+
             }
         })
     }catch(error) {

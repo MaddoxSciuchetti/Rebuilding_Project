@@ -16,7 +16,7 @@ export default function Modal({item, toggleModal, completeRemove}) {
                         <TiDelete className="x-item" onClick={toggleModal}/>
                     </div>
                     <h2 className="styling">Mit diser Aktion wird der Mitarbeiter und sein Fortschritt gelöscht</h2>
-                    <button className="close-modal styling" onClick={() => {toggleModal() , completeRemove(item)}}>Löschen</button>
+                    <button className="close-modal styling" onClick={() => {toggleModal() , completeRemove(item);}}>Löschen</button>
                 </div>
             </div>
 

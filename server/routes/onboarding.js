@@ -64,7 +64,7 @@ onboarding_router.get("/user/:id", (req, res) => {
             if(err){
                 res.send(err)
             } else{
-                res.send(result)
+                res.send(result.rows)
             }
         })
     }catch(error){

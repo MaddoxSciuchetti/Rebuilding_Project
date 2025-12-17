@@ -59,31 +59,33 @@ function Onboarding_form() {
     console.log(url)
 
 
-    const descriptions = [
-        "Arbeitsvertrag unterschrieben zurück + Dokumente BSB", 
-        "Personalfragebogen inkl. notw. Dokumente erhalten", 
-        "Arbeitsmaterialien bereitgestellt (Bestellung Werkzeug)",
-        "Arbeitsplatz eingerichtet",
-        "Software-Zugänge (Engine, Office365) Mailadresse",
-        "Computer eingerichtet",
-        "Handy + Tablet", 
-        "Schlüssel",
-        "Werkzeug QR-Codes registrieren",
-        "Auto",
-        "Arbeitskleidung",
-        "Visitenkarten",
-        "Willkommensmail an das Team",
-        "Einarbeitungsplan erstellt",
-        "BSB Fibel",
-        "Mail mit Kununu-Link versendet",
-        "Easy Park einrichten",
-    ]
+    // const descriptions = [
+    //     "Arbeitsvertrag unterschrieben zurück + Dokumente BSB", 
+    //     "Personalfragebogen inkl. notw. Dokumente erhalten", 
+    //     "Arbeitsmaterialien bereitgestellt (Bestellung Werkzeug)",
+    //     "Arbeitsplatz eingerichtet",
+    //     "Software-Zugänge (Engine, Office365) Mailadresse",
+    //     "Computer eingerichtet",
+    //     "Handy + Tablet", 
+    //     "Schlüssel",
+    //     "Werkzeug QR-Codes registrieren",
+    //     "Auto",
+    //     "Arbeitskleidung",
+    //     "Visitenkarten",
+    //     "Willkommensmail an das Team",
+    //     "Einarbeitungsplan erstellt",
+    //     "BSB Fibel",
+    //     "Mail mit Kununu-Link versendet",
+    //     "Easy Park einrichten",
+    // ]
 
     useEffect(() => {
         const dataFetch = async() => {
             const data = await (
                 await fetch(`${API_URL}/onboarding/user/`+url)
             ).json()
+
+            console.log(data)
 
 
             // 17 values wurde von Glenn erstellt
@@ -98,11 +100,12 @@ function Onboarding_form() {
             
             const formattedData = data.map((input, i) => {
                 return {
-                    description: descriptions[i],
+                    index: i, 
+                    description: input.description,
                     input: {
                         id: input.id, 
-                        status: input["status"],
-                        edit: input["edit"]
+                        status: input.status,
+                        edit: input.edit
                     }
                 }
             })
